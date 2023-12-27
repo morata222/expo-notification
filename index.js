@@ -15,7 +15,7 @@ let expo = new Expo({
   accessToken: 'RoS8GCvj9yOGMggqiUk22K1UwEGO5lHlk1LqVqc-',
 });
 
-const sendNotification = async (pushTokens) => {
+const sendNotification = async (pushTokens, message) => {
   let messages = [];
   
   for (let pushToken of pushTokens) {
@@ -27,7 +27,7 @@ const sendNotification = async (pushTokens) => {
     messages.push({
       to: pushToken,
       sound: 'default',
-      body: 'This is a test notification',
+      body: message,
       data: { withSome: 'data' },
     });
   }
@@ -48,8 +48,8 @@ const sendNotification = async (pushTokens) => {
 
 app.post('/send-notifications', async (req, res) => {
   try {
-    const { pushTokens } = req.body;
-    await sendNotification(pushTokens);
+    const { pushTokens, message } = req.body;
+    await sendNotification(pushTokens, message);
     res.status(200).json({ success: true, message: 'Notifications sent successfully' });
   } catch (error) {
     console.error(error);
